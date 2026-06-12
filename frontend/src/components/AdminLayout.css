@@ -1,0 +1,74 @@
+.admin-layout { display: flex; min-height: 100vh; }
+
+.admin-sidebar {
+  width: 230px;
+  background: var(--black);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.admin-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.admin-brand .brand-mark {
+  width: 32px; height: 32px;
+  background: var(--yellow);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 12px;
+  flex-shrink: 0;
+}
+
+.admin-brand .brand-text { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--white); line-height: 1.2; }
+.admin-brand .brand-sub { font-size: 11px; color: rgba(255,255,255,0.35); }
+
+.admin-nav { padding: 14px 10px; flex: 1; display: flex; flex-direction: column; gap: 2px; }
+
+.admin-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  transition: var(--transition);
+}
+.admin-nav-link:hover { background: rgba(255,255,255,0.06); color: var(--white); }
+.admin-nav-link.active { background: var(--yellow); color: var(--black); }
+
+.admin-sidebar-footer {
+  padding: 14px 16px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+.admin-user { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.admin-user .avatar { background: var(--yellow); }
+
+.admin-logout {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 7px;
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.55);
+  font-size: 13px;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.admin-logout:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+
+.admin-main { margin-left: 230px; flex: 1; padding: 32px; min-height: 100vh; }
