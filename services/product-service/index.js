@@ -3,8 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const mongoose = require("mongoose");
 const axios = require("axios");
 const Product = require("./Product");
@@ -12,19 +12,20 @@ const Product = require("./Product");
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use("/product-images", express.static("product-images"));
-
-if (!fs.existsSync("product-images")) fs.mkdirSync("product-images");
-
-const storage = multer.diskStorage({
-  destination: "product-images/",
-  filename: (req, file, cb) =>
-    cb(
-      null,
-      `prod_${Date.now()}_${Math.random().toString(36).slice(2)}${path.extname(file.originalname)}`,
-    ),
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "fashion-rescue",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+  },
+});
+const upload = multer({ storage, limits: { fileSize: 50 * 1024 * 1024 } });
 
 const JWT_SECRET = process.env.JWT_SECRET || "fashionrescue_jwt_secret_2024";
 
@@ -114,8 +115,7 @@ app.post(
   upload.array("images", 5),
   async (req, res) => {
     try {
-      if (!req.user.has_store)
-        return res.status(403).json({ message: "Kamu belum punya toko" });
+
       const {
         name,
         category,
@@ -126,14 +126,30 @@ app.post(
         store_id,
         store_name,
       } = req.body;
-      if (!name || !category || !size || !grade || !price)
-        return res.status(400).json({ message: "Field wajib tidak lengkap" });
+
+      if (!store_id) {
+        return res.status(400).json({
+          message: "Toko tidak ditemukan"
+        });
+      }
+
+      if (!name || !category || !size || !grade || !price) {
+        return res.status(400).json({
+          message: "Field wajib tidak lengkap"
+        });
+      }
 
       let images = [];
-      if (req.files && req.files.length > 0) {
-        images = req.files.map((f) => `/product-images/${f.filename}`);
+
+      if (req.files?.length > 0) {
+        images = req.files.map(
+          (f) => f.path
+        );
       }
-      if (req.body.image_url) images.push(req.body.image_url);
+
+      if (req.body.image_url) {
+        images.push(req.body.image_url);
+      }
 
       const product = await Product.create({
         name,
@@ -149,22 +165,33 @@ app.post(
         owner_name: req.user.name,
       });
 
-      // Update total_products di store
       try {
-        const count = await Product.countDocuments({ owner_id: req.user.id });
+        const count = await Product.countDocuments({
+          owner_id: req.user.id,
+        });
+
         await axios.patch(
           `http://localhost:3005/stores/owner/${req.user.id}/stats`,
-          { total_products: count },
+          {
+            total_products: count,
+          }
         );
       } catch (e) {
         console.error(e.message);
       }
 
-      res.status(201).json({ ...product.toObject(), id: product._id });
+      res.status(201).json({
+        ...product.toObject(),
+        id: product._id,
+      });
+
     } catch (err) {
-      res.status(500).json({ message: err.message });
+      console.error(err);
+      res.status(500).json({
+        message: err.message,
+      });
     }
-  },
+  }
 );
 
 // PUT update produk (seller)
@@ -191,7 +218,7 @@ app.put(
       if (description !== undefined) product.description = description;
       if (status) product.status = status;
       if (req.files && req.files.length > 0) {
-        product.images = req.files.map((f) => `/product-images/${f.filename}`);
+        product.images = req.files.map((f) => f.path);
       }
       if (req.body.image_url) product.images = [req.body.image_url];
 

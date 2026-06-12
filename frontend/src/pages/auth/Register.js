@@ -18,7 +18,10 @@ export default function Register() {
       await register(form.name, form.email, form.password);
       showToast('Akun berhasil dibuat!', 'success');
     } catch (err) {
-      showToast(err.response?.data?.message || 'Registrasi gagal', 'error');
+      const message = err.response?.data?.message
+        || (err.message?.includes('Network') ? 'Tidak dapat terhubung ke server. Jalankan backend terlebih dahulu.' : 'Registrasi gagal');
+      console.error('Register error:', err);
+      showToast(message, 'error');
     } finally { setLoading(false); }
   };
 
@@ -26,7 +29,7 @@ export default function Register() {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-logo-wrap">
-          <div className="auth-logo">FR</div>
+          <img src="/src/image.png" alt="PakaiLagi Logo" className="auth-logo" />
         </div>
         <h1 className="auth-title">Buat Akun Baru</h1>
         <p className="auth-sub">Bergabung dan temukan pakaian pre-loved terbaik</p>

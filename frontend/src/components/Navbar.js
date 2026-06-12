@@ -56,8 +56,8 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="container navbar-inner">
         <Link to={user ? "/catalog" : "/"} className="navbar-brand">
-          <span className="brand-mark">FR</span>
-          <span className="brand-text">Fashion Rescue</span>
+          <img src="/src/image.png" alt="PakaiLagi Logo" className="brand-logo" style={{ height: 35 }} />
+          <span className="brand-text">PAKAI LAGI</span>
         </Link>
 
         <div className="navbar-links">

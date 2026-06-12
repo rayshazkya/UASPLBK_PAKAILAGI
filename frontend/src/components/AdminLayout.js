@@ -20,9 +20,9 @@ export default function AdminLayout() {
     <div className="admin-layout">
       <aside className="admin-sidebar">
         <div className="admin-brand">
-          <div className="brand-mark">FR</div>
+          <img src="/src/image.png" alt="PakaiLagi Logo" className="brand-mark" style={{ width: 64, height: 64, objectFit: 'contain' }} />
           <div>
-            <div className="brand-text">Fashion Rescue</div>
+            <div className="brand-text">PAKAI LAGI</div>
             <div className="brand-sub">Admin Panel</div>
           </div>
         </div>

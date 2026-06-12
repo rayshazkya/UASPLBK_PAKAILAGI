@@ -16,7 +16,10 @@ export default function Login() {
     try {
       await login(form.email, form.password);
     } catch (err) {
-      showToast(err.response?.data?.message || 'Login gagal', 'error');
+      const message = err.response?.data?.message
+        || (err.message?.includes('Network') ? 'Tidak dapat terhubung ke server. Jalankan backend terlebih dahulu.' : 'Login gagal');
+      console.error('Login error:', err);
+      showToast(message, 'error');
     } finally { setLoading(false); }
   };
 
@@ -24,9 +27,9 @@ export default function Login() {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-logo-wrap">
-          <div className="auth-logo">FR</div>
+          <img src="/src/image.png" alt="PakaiLagi Logo" className="auth-logo" />
         </div>
-        <h1 className="auth-title">Masuk ke Fashion Rescue</h1>
+        <h1 className="auth-title">Masuk ke PAKAI LAGI</h1>
         <p className="auth-sub">Platform pakaian pre-loved</p>
 
         <form onSubmit={handleSubmit} className="auth-form">
@@ -45,9 +48,7 @@ export default function Login() {
 
         <p className="auth-footer">Belum punya akun? <Link to="/register">Daftar sekarang</Link></p>
 
-        <div className="auth-demo">
-          <strong>Demo admin:</strong> admin@fashionrescue.com / admin123
-        </div>
+      
       </div>
     </div>
   );
