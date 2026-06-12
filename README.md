@@ -1,4 +1,4 @@
-# Fashion Rescue v2 - Marketplace Pre-Loved
+# PakaiLagi - Marketplace Pre-Loved
 
 Platform marketplace pakaian pre-loved dengan sistem multi-seller, chat real-time, dan pembayaran Midtrans.
 
