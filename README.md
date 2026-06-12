@@ -9,10 +9,13 @@ Platform marketplace pakaian pre-loved dengan sistem multi-seller, chat real-tim
 ### 1. Isi file .env (di folder utama)
 
 ```
-MONGODB_URI=mongodb+srv://USERNAME:PASSWORD@cluster0.xxxxx.mongodb.net/fashion_rescue?retryWrites=true&w=majority&appName=Cluster0
+MONGODB_URI=mongodb+srv://tazkiyarahim_db_user:SNK12u4jboU0ShBx@cluster0.ykpl2ok.mongodb.net/fashion_rescue?retryWrites=true&w=majority&appName=Cluster0
 JWT_SECRET=fashionrescue_jwt_secret_2024
 MIDTRANS_SERVER_KEY=SB-Mid-server-your_key_here
 MIDTRANS_CLIENT_KEY=SB-Mid-client-your_key_here
+CLOUDINARY_CLOUD_NAME=dyxm8rxj4
+CLOUDINARY_API_KEY=684641268269393
+CLOUDINARY_API_SECRET=hP8ATtSJKVZDBHJ6h0-Uy-uxa4E
 ```
 
 ### 2. Buka 7 terminal, jalankan urut:
